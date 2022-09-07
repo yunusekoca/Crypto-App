@@ -51,8 +51,8 @@ final class CryptoListViewController: UIViewController {
     
     private func initViewModel() {
         cryptoListViewModel.cryptocurrencies.bind(to: tableView.rx.items(cellIdentifier: CryptoTableViewCell.identifier, cellType: CryptoTableViewCell.self)) { row, cryptocurrency, cell in
-            let cryptocurrencyVM = CryptocurrencyViewModel(model: cryptocurrency)
-            cell.configureCryptoCell(with: cryptocurrencyVM)
+            let cryptoCellVM = CryptoCellViewModel(model: cryptocurrency)
+            cell.configureCryptoCell(with: cryptoCellVM)
         }.disposed(by: bag)
         
         cryptoListViewModel.error.subscribe(onNext: { [weak self] error in
@@ -65,6 +65,11 @@ final class CryptoListViewController: UIViewController {
         
         tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
             self?.tableView.deselectRow(at: indexPath, animated: true)
+        }).disposed(by: bag)
+        
+        tableView.rx.modelSelected(Cryptocurrency.self).subscribe(onNext: { [weak self] cryptocurrency in
+            let cryptoDetailsVC = CryptoDetailsViewController(cryptocurrency: cryptocurrency)
+            self?.navigationController?.pushViewController(cryptoDetailsVC, animated: true)
         }).disposed(by: bag)
         
         cryptoListViewModel.fetchCryptocurrencies()
