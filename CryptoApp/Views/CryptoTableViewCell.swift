@@ -31,6 +31,7 @@ final class CryptoTableViewCell: UITableViewCell {
     private lazy var symbolImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.kf.indicatorType = .activity
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -47,8 +48,11 @@ final class CryptoTableViewCell: UITableViewCell {
         applyConstraints()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = nil
+        priceLabel.text = nil
+        symbolImageView.image = nil
     }
     
     private func applyConstraints() {
@@ -73,9 +77,13 @@ final class CryptoTableViewCell: UITableViewCell {
         ])
     }
     
-    func configureCryptoCell(with cryptocurrencyVM: CryptocurrencyViewModel) {
-        priceLabel.text = cryptocurrencyVM.currentPriceUSD
-        nameLabel.text = cryptocurrencyVM.name
-        symbolImageView.kf.setImage(with: cryptocurrencyVM.imageURL)
+    func configureCryptoCell(with cryptoCellVM: CryptoCellViewModel) {
+        priceLabel.text = cryptoCellVM.currentPriceUSD
+        nameLabel.text = cryptoCellVM.name
+        symbolImageView.kf.setImage(with: cryptoCellVM.imageURL)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

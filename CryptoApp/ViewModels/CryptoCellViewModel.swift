@@ -1,5 +1,5 @@
 //
-//  CryptocurrencyViewModel.swift
+//  CryptoCellViewModel.swift
 //  CryptoApp
 //
 //  Created by Yunus Emre Koca on 5.09.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class CryptocurrencyViewModel {
+final class CryptoCellViewModel {
     
     private let responseModel: Cryptocurrency
     
